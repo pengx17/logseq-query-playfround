@@ -1,33 +1,39 @@
 <script lang="ts">
-  export let name: string;
+  import Repl from "./Repl.svelte";
+
+  let inner: Element;
+
+  const clickOutside = (e: Event) => {
+    if (!inner.contains(e.target as any)) {
+      window.logseq.hideMainUI();
+    }
+  };
 </script>
 
-<main>
-  <h1>Hello {name}!</h1>
-  <p>
-    Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn
-    how to build Svelte apps.
-  </p>
+<main on:click={clickOutside}>
+  <div bind:this={inner} class="inner"><Repl /></div>
 </main>
 
 <style>
   main {
-    text-align: center;
-    padding: 1em;
-    max-width: 240px;
-    margin: 0 auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    position: fixed;
+    padding: 8em;
+    backdrop-filter: saturate(0.8) blur(10px);
   }
 
-  h1 {
-    color: #ff3e00;
-    text-transform: uppercase;
-    font-size: 4em;
-    font-weight: 100;
+  .inner {
+    border: 3px solid #000;
+    background: #eee;
+    height: 100%;
+    border-radius: 8px;
+    overflow: hidden;
   }
 
-  @media (min-width: 640px) {
-    main {
-      max-width: none;
-    }
+  .inner:focus-within {
+    box-shadow: 0 0 20px #888;
   }
 </style>
